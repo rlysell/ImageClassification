@@ -8,8 +8,8 @@ from tensorflow.python.keras.layers.pooling import MaxPool2D
 
 data = keras.datasets.cifar10
 
-EPOCHS = 100
-BATCH_SIZE = 128
+EPOCHS = 2
+BATCH_SIZE = 32
 val_split = 0.2
 
 (train_images, train_labels), (test_images, test_labels) = data.load_data()
@@ -22,7 +22,7 @@ train_images = train_images.reshape(train_images.shape[0], 32, 32, 3)
 test_images = test_images.reshape(test_images.shape[0], 32, 32, 3)
 
 loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-optimizer = keras.optimizers.Adam(lr=0.001)
+optimizer = keras.optimizers.Adam(lr=0.05)
 callback = keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
 def def_model():
@@ -63,6 +63,6 @@ try:
 except:
     print("An error occured")
 try:
-    tf.saved_model.save(model, '/images_classification.h5')
+    tf.saved_model.save(model, ' ')
 except:
     print('Unable to write to file')
