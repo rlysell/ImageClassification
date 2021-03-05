@@ -7,6 +7,11 @@ from tensorflow.python.keras.layers.core import Dense, Dropout, Flatten
 from tensorflow.python.keras.layers.pooling import MaxPool2D
 
 data = keras.datasets.cifar10
+
+EPOCHS = 100
+BATCH_SIZE = 128
+val_split = 0.2
+
 (train_images, train_labels), (test_images, test_labels) = data.load_data()
 
 classes = ['Airplane', 'Car', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
@@ -15,14 +20,6 @@ train_images = train_images / 255.0
 test_images = test_images / 255.0
 train_images = train_images.reshape(train_images.shape[0], 32, 32, 3)
 test_images = test_images.reshape(test_images.shape[0], 32, 32, 3)
-
-'''
-train_images = train_images[:-10000]
-train_labels = train_labels[:-10000]
-
-val_images = train_images[-10000:]
-val_labels = train_images[-10000:]
-'''
 
 loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 optimizer = keras.optimizers.Adam(lr=0.001)
@@ -49,17 +46,23 @@ def def_model():
     model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
     return model
 
-EPOCHS = 100
-BATCH_SIZE = 64
-val_split = 0.2
 def train_model(model):
-    history = model.fit(train_images, train_labels, epochs=EPOCHS, validation_split=val_split, batch_size=BATCH_SIZE)
+    history = model.fit(train_images, train_labels, epochs=EPOCHS, validation_split=val_split, batch_size=BATCH_SIZE, callbacks=callback)
     return history, model
-model = def_model()
-history, model = train_model(model)
-tf.saved_model.save(model)
+
+def load_model():
+    tf.saved_model.load('image_classification.h5')
+
 def plot_model(history):
     plt.figure(figsize=(32, 32))
     plt.plot(history.history['accuracy'])
-    
 
+model = def_model()
+try:
+    history, model = train_model(model)
+except:
+    print("An error occured")
+try:
+    tf.saved_model.save(model, '/images_classification.h5')
+except:
+    print('Unable to write to file')
