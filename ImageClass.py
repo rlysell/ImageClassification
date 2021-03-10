@@ -51,18 +51,26 @@ def train_model(model):
     return history, model
 
 def load_model():
-    tf.saved_model.load('image_classification.h5')
+    tf.saved_model.load('saved_image_model')
 
 def plot_model(history):
     plt.figure(figsize=(32, 32))
     plt.plot(history.history['accuracy'])
 
-model = def_model()
-try:
-    history, model = train_model(model)
-except:
-    print("An error occured")
-try:
-    tf.saved_model.save(model, ' ')
-except:
-    print('Unable to write to file')
+if __name__ == '__main__':
+    try:
+        model = load_model()
+    except:
+        model = def_model()
+        try:
+            history, model = train_model(model)
+        except:
+            print("An error occured")
+        try:
+            tf.saved_model.save(model, 'saved_image_model')
+        except:
+            print('Unable to write to file')
+    test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=1)
+    predictions = model.predict(test_images)
+
+
