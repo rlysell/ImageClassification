@@ -1,0 +1,18 @@
+{%extends "base.html"%}
+
+{%block title%}Home{%endblock%} 
+{%block content%} 
+
+<h1 align="center">Cats vs Dogs</h1>
+<p>Here you can upload a picture of any kind, and the computer will predict whether it thinks it's a picture of a dog or a cat</p>
+<form method="POST" enctype = "multipart/form-data">
+    <input name = "img" id = "img" type = "file" placeholder="Choose file" accept="image/*" onchange="loadFile(event)" style = "display: hidden;"></input>
+    <br />
+    <br />
+    <div align = "center">
+        <button id = "pred_button"  type = "submit" class = "btn btn-primary">Submit</button>
+    </div>
+</form>
+<br />
+{%endblock%} 
+

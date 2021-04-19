@@ -1,0 +1,21 @@
+{%extends "base.html"%}
+
+{%block title%}Answer{%endblock%}
+{%block content%}
+
+<h1 align="center">This is the answer</h1>
+{% with answer = user %}
+<div align="left">
+    <p>Probability of it beeing a dog: {{answer.dog}} %</p>
+    <br />
+    <p>Probability of it beeing a cat: {{answer.cat}} %</p>
+    {%endwith%}
+</div>
+    <form method="POST">
+        <div align="center" style = " position: absolute; bottom: 5%; left: 20%; right: 20%" >
+            <button id="name_button" type = 'submit' class="btn btn-primary">Provide new picture</button>
+            <br />
+        </div>
+    </form>
+
+{%endblock%}
